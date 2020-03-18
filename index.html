@@ -55,7 +55,11 @@
             } else {
                 statusMessage('HTML5 Geolocation is not supported.')
             }
-            geo.getCurrentPosition(show_coords, geo_error);
+            geo.watchPosition(show_coords, geo_error, {
+              maximumAge: 1000,
+              timeout: 300000,
+              enableHighAccuracy: true
+            });
         }
 
         window.onload = function() {
