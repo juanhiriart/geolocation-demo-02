@@ -1,70 +1,67 @@
 <!DOCTYPE html>
-<<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>HTML5 Geolocation demo</title>
-    <link rel="stylesheet" href="./CSS/main.css"/>
+<html>
+
+<head>
+    <title>
+        HTML5 Geolocation
+    </title>
+    <link rel="stylesheet" type="text/css" href="./CSS/main.css" />
     <script type="text/javascript" src="./Javascript/bwH5.js"></script>
     <script type="text/javascript">
-      var t = new bwTable();
-      var geo;
+        var t = new bwTable();
+        var geo;
 
-      function getGeoLocation()
-      {
-        try
-        {
-          if(!! navigator.geolocation) return navigator.geolocation;
-          else return undefined;
+        function getGeoLocation() {
+            try {
+                if( !! navigator.geolocation ) return navigator.geolocation;
+                else return undefined;
+            } catch(e) {
+                return undefined;
+            }
         }
-        catch(e)
-        {
-          return undefined;
+
+        function show_coords(position) {
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+            t.updateRow(0, [ lat.toString(), lon.toString() ] );
+            dispResults();
         }
-      }
 
-      function init()
-      {
-        if((geo = getGeoLocation()))
-        {
-          statusMessage('HTML5 Geolocation is supported');
-          t.setHeader(['Latitude', 'Longitude']);
-          t.addRow(['&nbsp;', '&nbsp;']);
+        function dispResults() {
+            element('results').innerHTML = t.getTableHTML();
         }
-        else
-        {
-          statusMessage('HTML5 Geolocation is not supported');
+
+        function init() {
+            if((geo = getGeoLocation())) {
+                statusMessage('Using HTML5 Geolocation')
+                t.setHeader( [ 'Latitude', 'Longitude' ] );
+                t.addRow( [ '&nbsp;', '&nbsp;' ] );
+            } else {
+                statusMessage('HTML5 Geolocation is not supported.')
+            }
+            geo.getCurrentPosition(show_coords);
         }
-        geo.getCurrentPosition(show_coords);
-      }
 
-      function show_coords(position)
-      {
-        var lat = position.coords.latitude;
-        var lon = position.coords.longitude;
-        t.updateRow(0, [lat.toString(), lon.toString()]);
-        dispResults();
-      }
-
-      function dispResults()
-      {
-        element('results').innerHTML = t.getTableHTML();
-      }
-
-      window.onload = function()
-      {
-        init();
-      }
-
+        window.onload = function() {
+            init();
+        }
     </script>
-  </head>
-  <body>
-    <div id="content">
-      <h1>HTML5 Geolocation demo</h1>
-      <p class="message" id="statusMessage"/>
-      <div id="results">
+</head>
 
-      </div>
+<body>
+
+<div id="content">
+
+    <h1>
+        HTML5 Geolocation
+    </h1>
+
+    <p class="message" id="statusMessage"/>
+
+    <div id="results">
+    <!-- results show here -->
     </div>
-  </body>
+
+</div>
+</body>
 </html>
