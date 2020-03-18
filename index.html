@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="./CSS/main.css"/>
     <script type="text/javascript" src="./Javascript/bwH5.js"></script>
     <script type="text/javascript">
+      var t = new bwTable();
       var geo;
 
       function getGeoLocation()
@@ -27,12 +28,27 @@
         if((geo = getGeoLocation()))
         {
           statusMessage('HTML5 Geolocation is supported');
+          t.setHeader(['Latitude', 'Longitude']);
+          t.addRow(['&nbsp;', '&nbsp;']);
         }
         else
         {
           statusMessage('HTML5 Geolocation is not supported');
         }
+        geo.getCurrentPosition(show_coords);
+      }
+
+      function show_coords(position)
+      {
+        var lat = position.coords.latitude;
+        var lon = position.coords.longitude;
+        t.updateRow(0, [lat.toString(), lon.toString()]);
         dispResults();
+      }
+
+      function dispResults()
+      {
+        element('results').innerHTML = t.getTableHTML();
       }
 
       window.onload = function()
@@ -46,6 +62,9 @@
     <div id="content">
       <h1>HTML5 Geolocation demo</h1>
       <p class="message" id="statusMessage"/>
+      <div id="results">
+
+      </div>
     </div>
   </body>
 </html>
